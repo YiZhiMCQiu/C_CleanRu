@@ -1,6 +1,10 @@
 #include<iostream>
 #include<Thread>
 #include<map>
+
+#include <windows.h>
+#include <shlobj.h>
+
 #include"system_clean.h"
 #include"MengFileManager.h"
 using namespace std;
@@ -92,7 +96,7 @@ int main() {
 			meng.startClean();
 			//testFunc("C:\\Windows\\SoftwareDistribution\\Download", threadPool);
 			//fileRemoveTest();
-			//this_thread::sleep_for(chrono::seconds(30));
+			this_thread::sleep_for(chrono::seconds(30));
 			system("cls");
 			break;
 
@@ -105,19 +109,60 @@ int main() {
 	}
 }
 
+
+string wConvertString(const wstring& wstr) {
+	if (wstr.empty()) {
+		return "";
+	}
+	int size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), (int)wstr.size(), nullptr, 0, nullptr, nullptr);
+	string strTo(size_needed, 0);
+	WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), (int)wstr.size(), &strTo[0], size_needed, nullptr, nullptr);
+	return strTo;
+
+}
+
+void convertT() {
+	PWSTR pathPtr;
+	wstring path;
+	HRESULT hr = SHGetKnownFolderPath(FOLDERID_Profile, 0, NULL, &pathPtr);
+
+	if (SUCCEEDED(hr)) {
+		path = pathPtr;
+		CoTaskMemFree(pathPtr);
+	}
+	else {
+		std::cerr << "没找到。" << std::endl;
+	}
+	string user_path = wConvertString(path);
+}
+
 map<string, string> addTarget()
 {
+	PWSTR pathPtr;
+	wstring path;
+	HRESULT hr = SHGetKnownFolderPath(FOLDERID_Profile, 0, NULL, &pathPtr);
+
+	if (SUCCEEDED(hr)) {
+		path = pathPtr;
+		CoTaskMemFree(pathPtr);
+	}
+	else {
+		std::cerr << "没找到。" << std::endl;
+	}
+	string user_path = wConvertString(path);
+	
+
 	map<string, string> target;
 	string userPath = MFileClean::getUserDir();
 	if (filesystem::exists(userPath + "\\Downloads")) {
-		target.insert(pair<string, string>("C盘下载文件夹(谨慎删除)", userPath + "\\Downloads"));
+		target.insert(pair<string, string>("C盘下载文件夹(谨慎删除)", user_path + "\\Downloads"));
 	}
-	target.insert(pair<string, string>("垃圾缓存文件(推荐删除)", userPath + "\\AppData\\Local\\Temp"));
+	target.insert(pair<string, string>("垃圾缓存文件(推荐删除)", user_path + "\\AppData\\Local\\Temp"));
 	target.insert(pair<string, string>("预取文件,加快程序启动速度缓存文件(谨慎删除)", "C:\\Windows\\prefetch"));
-	target.insert(pair<string, string>("临时互联网文件01,浏览器缓存文件(谨慎删除)", userPath + "\\AppData\\Local\\Microsoft\\Windows\\INetCache"));
-	target.insert(pair<string, string>("临时互联网文件02,浏览器缓存文件(谨慎删除)", userPath + "\\AppData\\Local\\Microsoft\\Windows\\WebCache"));
+	target.insert(pair<string, string>("临时互联网文件01,浏览器缓存文件(谨慎删除)", user_path + "\\AppData\\Local\\Microsoft\\Windows\\INetCache"));
+	target.insert(pair<string, string>("临时互联网文件02,浏览器缓存文件(谨慎删除)", user_path + "\\AppData\\Local\\Microsoft\\Windows\\WebCache"));
 	target.insert(pair<string, string>("Windows更新缓存(推荐删除)", "C:\\Windows\\SoftwareDistribution\\Download"));
-	target.insert(pair<string, string>("应用程序缓存02(谨慎删除)", userPath + "\\AppData\\Roaming"));
+	target.insert(pair<string, string>("应用程序缓存02(谨慎删除)", user_path + "\\AppData\\Roaming"));
 	target.insert(pair<string, string>("Windows 错误报告(推荐删除)", "C:\\ProgramData\\Microsoft\\Windows\\WER"));
 	//target.insert(pair<string, string>("test1", "D:\\test1"));
 	//target.insert(pair<string, string>("test2", "D:\\test2"));
