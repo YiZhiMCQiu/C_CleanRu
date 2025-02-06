@@ -1,9 +1,9 @@
 #include "MengFileManager.h"
 namespace fs = filesystem;
 
-MScreen::MScreen(MThreadPool* tP)
+MScreen::MScreen(MThreadPool* tP, map<string, string>& target_list)
 {
-	file_clean = new MFileClean(tP);
+	file_clean = new MFileClean(tP,target_list);
 }
 
 void MScreen::startClean()

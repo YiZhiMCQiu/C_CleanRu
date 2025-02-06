@@ -7,11 +7,11 @@ MThreadPool::MThreadPool(int threadNum):stop(false)
 			while (1) {
 				unique_lock<mutex>lock(mtx);
 				m_cv.wait(lock, [this] {
-					return !tasks.empty();
+					return !tasks.empty() ;
 					});
 
 				if (stop && tasks.empty()) {
-					return;
+					break;
 				}
 				auto func = tasks.front();
 				tasks.pop();

@@ -20,7 +20,7 @@ private:
 	queue<function<void()>> tasks;
 	condition_variable m_cv;
 	mutex mtx;
-	unsigned int taskNum;
+	unsigned taskNum;
 	bool stop;
 };
 
