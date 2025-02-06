@@ -1,0 +1,8 @@
+﻿  system_clean.cpp
+D:\C++项目\clean_ trash\clean_ trash\system_clean.cpp(56,32): warning C4267: “初始化”: 从“size_t”转换到“unsigned int”，可能丢失数据
+D:\C++项目\clean_ trash\clean_ trash\system_clean.cpp(64,39): warning C4267: “+=”: 从“size_t”转换到“unsigned int”，可能丢失数据
+D:\C++项目\clean_ trash\clean_ trash\system_clean.cpp(107,55): warning C4101: “e”: 未引用的局部变量
+D:\C++项目\clean_ trash\clean_ trash\system_clean.cpp(127,52): warning C4101: “e”: 未引用的局部变量
+D:\C++项目\clean_ trash\clean_ trash\system_clean.cpp(224,1): warning C4715: “MFileClean::getUserDir”: 不是所有的控件路径都返回值
+D:\C++项目\clean_ trash\clean_ trash\system_clean.cpp(170,1): warning C4715: “``MFileClean::scanFile'::`9'::<lambda_1>::operator()'::`3'::<lambda_1>::operator()”: 不是所有的控件路径都返回值
+  clean_ trash.vcxproj -> D:\C++项目\clean_ trash\x64\Debug\clean_ trash.exe
